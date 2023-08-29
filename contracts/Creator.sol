@@ -1,38 +1,37 @@
 // SPDX-License-Identifier: GPL-3.0
 
-pragma solidity >=0.8.2 <0.9.0;
+pragma solidity 0.8.21;
 
-import { Test } from "./Test.sol";
+import {Account} from "./Account.sol";
+//import "hardhat/console.sol";
 
-/**
- * @title Storage
- * @dev Store & retrieve value in a variable
- * @custom:dev-run-script ./scripts/deploy_with_ethers.ts
- */
 contract Creator {
 
     event TestDeployed(address);
 
-    function createContract(uint256 num, uint256 _salt) public returns (Test test) {
-        address contractAddress = getAddress(num, _salt);
+    function createContract(uint256 _num, uint256 _salt) external returns (Account) {
+        address contractAddress = prepareAddress(_num, _salt);
 
-        uint result = contractAddress.code.length;
-        if (result > 0) {
-            return Test(payable(contractAddress));
+        uint length = contractAddress.code.length;
+        if (length > 0) {
+            return Account(payable(contractAddress));
         }
 
-        test = new Test{salt : bytes32(_salt)}(num);
-        emit TestDeployed(address(test));
+        Account account = new Account{salt : bytes32(_salt)}(_num);
+        emit TestDeployed(address(account));
+
+        return account;
     }
 
-    function getAddress(uint256 num, uint256 salt) private view returns (address) {
-        bytes memory bytecode = getBytecode(num);
+    function prepareAddress(uint256 _num, uint256 _salt) public view returns (address) {
+        bytes memory bytecode = getBytecode(_num);
+        address a = address(this);
 
         bytes32 hash = keccak256(
             abi.encodePacked(
                 bytes1(0xff),
-                address(this),
-                salt,
+                a,
+                _salt,
                 keccak256(bytecode)
             )
         );
@@ -40,12 +39,12 @@ contract Creator {
         return address(uint160(uint256(hash)));
     }
 
-    function getBytecode(uint256 num) private pure returns (bytes memory) {
-        bytes memory bytecode = type(Test).creationCode;
-        
+    function getBytecode(uint256 _num) public pure returns (bytes memory) {
+        bytes memory bytecode = type(Account).creationCode;
+
         return abi.encodePacked(
             bytecode,
-            abi.encode(num)
+            abi.encode(_num)
         );
     }
 }
