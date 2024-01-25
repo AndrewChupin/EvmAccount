@@ -1,0 +1,16 @@
+{
+  "code": 2000,
+  "message": "Success",
+  "data": [
+    {
+      "name": "account-abstraction",
+      "network": "mainnet",
+      "nodes": [
+        {
+          "url": "",
+          "weight": "high"
+        }
+      ]
+    }
+  ]
+}
