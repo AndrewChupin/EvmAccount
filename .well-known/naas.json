@@ -7,7 +7,7 @@
       "network": "mainnet",
       "nodes": [
         {
-          "url": "https://aag.twnodes-stg.com/naas/session/MWU0MzRhN2EtNjMxMS00NDk4LTkzOTMtMTcyMTc4ZGYwYTAw",
+          "url": "https://aag.twnodes-stg.com/naas/session/MWU0MzRhN2EtNjMxMS00NDk4LTkzOTMtMTcyMTc4ZGYwYTAw/v1",
           "weight": "high"
         }
       ]
